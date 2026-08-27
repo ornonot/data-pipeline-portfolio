@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: raw_weather
+    database: de-portfolio-2026
+    schema: raw_data
+    tables:
+      - name: weather_forecast
