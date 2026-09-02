@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: dim_portfolio
+    description: "ポートフォリオ用のデータマートテーブル"
+    columns:
+      - name: area_name
+        description: "地域名（主キー想定）"
+        tests:
+          - unique
+          - not_null
