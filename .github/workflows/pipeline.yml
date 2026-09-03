@@ -33,9 +33,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install dbt-bigquery
 
-      # 5. dbt 実行・テスト
+      # 5. profiles.yml の動的生成 ＆ dbt 実行・テスト
       - name: Run dbt run and test
         run: |
+          mkdir -p ~/.dbt
+          cat << 'EOF' > ~/.dbt/profiles.yml
+          default:
+            target: dev
+            outputs:
+              dev:
+                type: bigquery
+                method: service-account
+                project: de-portfolio-2026
+                dataset: dbt_workspace
+                location: asia-northeast1
+                priority: interactive
+                threads: 1
+                keyfile: ${{ env.GCP_ENV_KEY_FILE }}
+          EOF
           dbt run
           dbt test
 
