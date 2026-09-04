@@ -50,7 +50,7 @@ jobs:
       # 5. dbt 実行 ＆ テスト
       - name: Run dbt run and test
         run: |
-          dbt run
+          dbt run --full-refresh
           dbt test
 
       # 6. 成功時の Slack 通知
