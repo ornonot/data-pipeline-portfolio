@@ -15,27 +15,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. GCP 認証
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-      # 3. Python セットアップ
+      # 2. Python セットアップ
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      # 4. dbt-bigquery インストール
+      # 3. dbt-bigquery インストール
       - name: Install dbt
         run: |
           python -m pip install --upgrade pip
           pip install dbt-bigquery
 
-      # 5. profiles.yml の動的生成 ＆ dbt 実行・テスト
-      - name: Run dbt run and test
+      # 4. GCP サービスアカウントキーの作成 ＆ profiles.yml の動的生成
+      - name: Setup Credentials and profiles.yml
         run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > ~/.dbt/gcp-key.json
           mkdir -p ~/.dbt
           cat << 'EOF' > ~/.dbt/profiles.yml
           default:
@@ -49,8 +44,12 @@ jobs:
                 location: asia-northeast1
                 priority: interactive
                 threads: 1
-                keyfile: ${{ env.GCP_ENV_KEY_FILE }}
+                keyfile: /home/runner/.dbt/gcp-key.json
           EOF
+
+      # 5. dbt 実行 ＆ テスト
+      - name: Run dbt run and test
+        run: |
           dbt run
           dbt test
 
