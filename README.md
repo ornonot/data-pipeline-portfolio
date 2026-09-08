@@ -1,21 +1,23 @@
 # Data Pipeline Portfolio (dbt + BigQuery + GitHub Actions)
 
-本リポジトリは、BigQuery と dbt を用いたデータパイプラインおよび GitHub Actions による CI/CD 自動化環境のポートフォリオです。
+本リポジトリは、Google BigQuery と dbt を用いたデータパイプライン構築、および GitHub Actions による CI/CD 自動化環境のポートフォリオです。
+
+---
 
 ## 🏗 システム構成図 (Architecture)
-'''mermaid
-    flowchart TD
+```mermaid
+flowchart TD
     subgraph GCP["Google Cloud Platform"]
-    BQ[("BigQuery\n(de-portfolio-2026)")]
-'''end
-
-    subgraph CI_CD["GitHub Actions (CI/CD)"]
-        GA["dbt CI/CD Pipeline\n(pipeline.yml)"]
-        ENV["Python 3.10 / dbt-bigquery"]
-        RUN["dbt run --full-refresh\ndbt test"]
+        BQ[("BigQuery\n(de-portfolio-2026)")]
     end
 
-    subgraph Notification["Slack"]
+    subgraph CI_CD["GitHub Actions (CI/CD)"]
+        GA["dbt CI/CD Pipeline\n(.github/workflows/pipeline.yml)"]
+        ENV["Environment Setup\n(Python 3.10 / dbt-bigquery)"]
+        RUN["dbt Execution\n(dbt run --full-refresh / dbt test)"]
+    end
+
+    subgraph Notification["Slack WorkSpace"]
         SLACK["dbt-notification"]
     end
 
@@ -25,7 +27,7 @@
     ENV --> RUN
     RUN -->|"Service Account Auth"| BQ
     RUN -->|"Success / Failure Alert"| SLACK
-
+```
 ## 🛠 技術スタック (Tech Stack)
 
 | カテゴリ | 採用技術 / ツール | 役割 |
