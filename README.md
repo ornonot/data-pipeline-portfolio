@@ -6,26 +6,26 @@
 
 ## 🏗 システム構成図 (Architecture)
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph GCP["Google Cloud Platform"]
-        BQ[("BigQuery<br>(de-portfolio-2026)")]
+        BQ[("BigQuery<br>de-portfolio-2026")]
     end
 
-    subgraph CI_CD["GitHub Actions (CI/CD)"]
-        GA["dbt CI/CD Pipeline<br>(.github/workflows/pipeline.yml)"]
-        ENV["Environment Setup<br>(Python 3.10 / dbt-bigquery)"]
-        RUN["dbt Execution<br>(dbt run --full-refresh / dbt test)"]
+    subgraph CI_CD["GitHub Actions"]
+        GA["dbt CI/CD Pipeline"]
+        ENV["Setup Python 3.10 & dbt"]
+        RUN["dbt run --full-refresh <br>& dbt test"]
     end
 
-    subgraph Notification["Slack WorkSpace"]
+    subgraph Slack["Slack Notification"]
         SLACK["dbt-notification"]
     end
 
-    Developer["Developer"] -->|"Git Push / PR / Manual Trigger"| GA
+    Dev["Developer"] -->|"Push / PR / Manual"| GA
     GA --> ENV
     ENV --> RUN
-    RUN -->|"Service Account Auth"| BQ
-    RUN -->|"Success / Failure Alert"| SLACK
+    RUN -->|"Service Account"| BQ
+    RUN -->|"Alert"| SLACK
 ```
 ## 🛠 技術スタック (Tech Stack)
 
