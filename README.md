@@ -8,21 +8,20 @@
 ```mermaid
 flowchart TD
     subgraph GCP["Google Cloud Platform"]
-        BQ[("BigQuery\n(de-portfolio-2026)")]
+        BQ[("BigQuery<br>(de-portfolio-2026)")]
     end
 
     subgraph CI_CD["GitHub Actions (CI/CD)"]
-        GA["dbt CI/CD Pipeline\n(.github/workflows/pipeline.yml)"]
-        ENV["Environment Setup\n(Python 3.10 / dbt-bigquery)"]
-        RUN["dbt Execution\n(dbt run --full-refresh / dbt test)"]
+        GA["dbt CI/CD Pipeline<br>(.github/workflows/pipeline.yml)"]
+        ENV["Environment Setup<br>(Python 3.10 / dbt-bigquery)"]
+        RUN["dbt Execution<br>(dbt run --full-refresh / dbt test)"]
     end
 
     subgraph Notification["Slack WorkSpace"]
         SLACK["dbt-notification"]
     end
 
-    %% Workflow Flow
-    Developer["💻 Developer"] -->|"Git Push / PR / Manual Trigger"| GA
+    Developer["Developer"] -->|"Git Push / PR / Manual Trigger"| GA
     GA --> ENV
     ENV --> RUN
     RUN -->|"Service Account Auth"| BQ
